@@ -1,0 +1,21 @@
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+
+<body>
+  <div id="app">
+    <button @click="move" type="button" class="move">Move to Bottom</button>
+    <div v-for="person in people" class="card" :key="person.name">
+      <h3>{{person.name}}</h3>
+      <p>{{person.message}}</p>
+      <input type="text"/>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/vue@next"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
