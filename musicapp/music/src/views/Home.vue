@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { query, where, getDocs } from 'firebase/firestore'
+import { query, where, getDocs, getDoc, doc, startAfter, orderBy, limit } from 'firebase/firestore'
 import { songsCollection, auth } from '@/includes/firebase'
 
 import AppSongItem from '@/components/SongItem.vue'
@@ -53,15 +53,19 @@ export default {
 
   data() {
     return {
-      songs: []
+      songs: [],
+      maxPerPage: 3,
+      pendingRequest: false
     }
   },
   async created() {
-    const q = await query(songsCollection, where('uid', '==', auth.currentUser?.uid))
+    this.getSongs()
 
-    const snapshot = await getDocs(q)
+    window.addEventListener('scroll', this.handleScroll)
+  },
 
-    snapshot.forEach(this.addSong)
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 
   methods: {
@@ -72,6 +76,43 @@ export default {
       }
 
       this.songs.push(song)
+    },
+
+    async getSongs() {
+      if (this.pendingRequest) {
+        return
+      }
+
+      this.pendingRequest = true
+
+      let q
+      if (this.songs.length) {
+        const lastSong = await getDoc(doc(songsCollection, this.songs[this.songs.length - 1].docID))
+        q = query(
+          songsCollection,
+          orderBy('modified_name'),
+          startAfter(lastSong),
+          limit(this.maxPerPage)
+        )
+      } else {
+        q = query(songsCollection, orderBy('modified_name'), limit(this.maxPerPage))
+      }
+      const snapshot = await getDocs(q)
+
+      snapshot.forEach(this.addSong)
+
+      this.pendingRequest = false
+    },
+
+    handleScroll() {
+      const { scrollTop, offsetHeight } = document.documentElement
+      const { innerHeight } = window
+
+      const bottomOfWindow = Math.round(scrollTop) + innerHeight === offsetHeight
+
+      if (bottomOfWindow) {
+        this.getSongs()
+      }
     }
   }
 }

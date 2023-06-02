@@ -36,7 +36,6 @@ export default defineStore('user', {
     },
 
     async authentication(values: any) {
-      console.log(values)
       await signInWithEmailAndPassword(auth, values.email, values.password)
       this.userLoggedIn
     },
