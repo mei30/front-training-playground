@@ -18,6 +18,7 @@ const firestore = getFirestore(firebase)
 
 const usersCollection = collection(firestore, 'users')
 const songsCollection = collection(firestore, 'songs')
+const commentsCollection = collection(firestore, 'comments')
 const storage = getStorage()
 
-export { firestore, usersCollection, auth, storage, songsCollection }
+export { firestore, usersCollection, auth, storage, songsCollection, commentsCollection }

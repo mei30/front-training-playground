@@ -40,8 +40,8 @@
 </template>
 
 <script lang="ts">
-import { query, where, getDocs, getDoc, doc, startAfter, orderBy, limit } from 'firebase/firestore'
-import { songsCollection, auth } from '@/includes/firebase'
+import { query, getDocs, getDoc, doc, startAfter, orderBy, limit } from 'firebase/firestore'
+import { songsCollection } from '@/includes/firebase'
 
 import AppSongItem from '@/components/SongItem.vue'
 
