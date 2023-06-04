@@ -8,6 +8,7 @@
     <div class="container mx-auto flex items-center">
       <!-- Play/Pause Button -->
       <button
+        @click.prevent="newSong(song)"
         type="button"
         class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
       >
@@ -88,6 +89,10 @@ import { songsCollection, commentsCollection, auth } from '@/includes/firebase'
 import { type ErrorMessage } from 'vee-validate'
 import { addDoc } from 'firebase/firestore'
 
+import { mapActions } from 'pinia'
+
+import usePlayerStore from '@/stores/player'
+
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/user'
 
@@ -138,6 +143,8 @@ export default {
   },
 
   methods: {
+    ...mapActions(usePlayerStore, ['newSong']),
+
     async getComments() {
       const q = await query(commentsCollection, where('sid', '==', this.$route.params.id as string))
 
