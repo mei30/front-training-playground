@@ -27,7 +27,7 @@
     <section class="container mx-auto">
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
         <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
-          <span class="card-title" v-icon="'headphones-alt'">Songs</span>
+          <span class="card-title" v-icon-secondary="{icon: 'headphones-alt', right: true}">Songs</span>
         </div>
         <!-- Playlist -->
         <ol id="playlist">
@@ -45,10 +45,16 @@ import { songsCollection } from '@/includes/firebase'
 
 import AppSongItem from '@/components/SongItem.vue'
 
+import IconSecondary from '@/directives/icon-secondary'
+
 export default {
   name: 'SongItem',
   components: {
     AppSongItem
+  },
+
+  directives: {
+    'icon-secondary': IconSecondary
   },
 
   data() {
