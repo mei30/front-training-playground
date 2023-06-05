@@ -21,7 +21,7 @@ onAuthStateChanged(auth, (user) => {
     app.use(VeeValidation)
     app.use(router)
 
-    app.directives('icon', Icon)
+    app.directive('icon', Icon)
 
     app.mount('#app')
   }
