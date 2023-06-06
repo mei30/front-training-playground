@@ -74,6 +74,19 @@ export default {
           return
         }
 
+        if (!navigator.onLine) {
+          console.log('ffffffffffffffffffffffffffffffffffffffffff')
+          this.uploads.push({
+            uploadTask: {} as UploadTask,
+            name: file.name,
+            current_progress: 100,
+            variant: 'bg-red-400',
+            icon: 'fas fa-times',
+            text_class: 'text-red-400'
+          })
+          return
+        }
+
         const songsRef = ref(storage, `songs/${file.name}`)
 
         const uploadTask = uploadBytesResumable(songsRef, file)

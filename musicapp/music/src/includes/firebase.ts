@@ -1,6 +1,12 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import { getFirestore, collection } from 'firebase/firestore'
+import {
+  getFirestore,
+  collection,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager
+} from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 
 // Your web app's Firebase configuration
@@ -14,7 +20,9 @@ const firebaseConfig = {
 
 const firebase = initializeApp(firebaseConfig)
 const auth = getAuth(firebase)
-const firestore = getFirestore(firebase)
+const firestore = initializeFirestore(firebase, {
+  localCache: persistentLocalCache(/*settings*/ { tabManager: persistentMultipleTabManager() })
+})
 
 const usersCollection = collection(firestore, 'users')
 const songsCollection = collection(firestore, 'songs')
