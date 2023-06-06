@@ -1,6 +1,6 @@
-// This example showes how to register a directive as local
+// This example shows how to register a directive as local
 export default {
-  beforeMount(el, binding) {
+  beforeMount(el: any, binding: any) {
     let iconClass = `fa fa-${binding.value.icon} text-green-400 text-xl`
 
     if (binding.value.right) {

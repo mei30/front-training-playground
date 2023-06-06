@@ -48,6 +48,7 @@ import { songsCollection } from '@/includes/firebase'
 import AppSongItem from '@/components/SongItem.vue'
 
 import IconSecondary from '@/directives/icon-secondary'
+import type { Song } from '@/includes/types'
 
 export default {
   name: 'SongItem',
@@ -61,7 +62,7 @@ export default {
 
   data() {
     return {
-      songs: [],
+      songs: [] as Song[],
       maxPerPage: 3,
       pendingRequest: false
     }
@@ -77,8 +78,8 @@ export default {
   },
 
   methods: {
-    addSong(document) {
-      const song = {
+    addSong(document: any) {
+      const song: Song = {
         ...document.data(),
         docID: document.id
       }

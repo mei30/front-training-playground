@@ -39,7 +39,7 @@
   </vee-form>
 </template>
 
-<script>
+<script lang="ts">
 import { mapActions } from 'pinia'
 import useUserStore from '@/stores/user'
 
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     ...mapActions(useUserStore, ['authentication']),
-    async login(values) {
+    async login(values: any) {
       this.login_show_alert = true
       this.login_in_submission = true
       this.login_alert_variant = 'bg-blue-500'

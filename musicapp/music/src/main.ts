@@ -12,7 +12,7 @@ import Icon from '@/directives/icon'
 
 import App from './App.vue'
 
-let app
+let app: any
 
 onAuthStateChanged(auth, (user) => {
   if (!app) {

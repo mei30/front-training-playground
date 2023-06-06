@@ -3,16 +3,18 @@ import { Howl } from 'howler'
 
 import helper from '@/includes/helper'
 
+import type { Song } from '@/includes/types'
+
 export default defineStore('player', {
   state: () => ({
-    current_song: {},
+    current_song: {} as Song,
     sound: {} as Howl,
     seek: '00:00',
     duration: '00:00',
     playerProgress: '0%'
   }),
   actions: {
-    async newSong(song) {
+    async newSong(song: Song) {
       if (Object.keys(this.sound).length != 0) {
         return
       }
@@ -54,7 +56,7 @@ export default defineStore('player', {
       }
     },
 
-    updateSeek(event) {
+    updateSeek(event: any) {
       if (!this.sound.playing) {
         return
       }

@@ -13,8 +13,16 @@
           </div>
           <div class="p-6">
             <!-- Composition Items -->
-            <CompositionItem v-for="(song, i) in songs" :key="song.docID" :song="song" :index="i" :updateSong="updateSong"
-              :removeSong="removeSong" :addSong="addSong" :updateUnsavedFlag="updateUnsavedFlag"></CompositionItem>
+            <CompositionItem
+              v-for="(song, i) in songs"
+              :key="song.docID"
+              :song="song"
+              :index="i"
+              :updateSong="updateSong"
+              :removeSong="removeSong"
+              :addSong="addSong"
+              :updateUnsavedFlag="updateUnsavedFlag"
+            ></CompositionItem>
           </div>
         </div>
       </div>
@@ -23,29 +31,21 @@
 </template>
 
 <script lang="ts">
-import useUserStore from '@/stores/user';
+import useUserStore from '@/stores/user'
 import AppUpload from '@/components/Upload.vue'
 import CompositionItem from '@/components/CompositionItem.vue'
 
-interface Song {
-  display_name?: string;
-  original_name?: string;
-  modified_name?: string;
-  genre?: string;
-  comment_count?: number;
-  url?: string;
-  docID?: string;
-}
+import { query, where, getDocs, type DocumentData } from 'firebase/firestore'
+import { songsCollection, auth } from '@/includes/firebase'
 
-import { query, where, getDocs } from 'firebase/firestore';
-import { songsCollection, auth } from '@/includes/firebase';
+import type { Song } from '@/includes/types'
 
 export default {
   name: 'manage',
   data() {
     return {
       songs: [] as Song[],
-      unsavedFlag: false,
+      unsavedFlag: false
     }
   },
 
@@ -55,10 +55,10 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    const store = useUserStore();
+    const store = useUserStore()
 
     if (store.userLoggedIn) {
-      next();
+      next()
     } else {
       next({ name: 'home' })
     }
@@ -66,42 +66,40 @@ export default {
   async created() {
     const q = await query(songsCollection, where('uid', '==', auth.currentUser?.uid))
 
-    const snapshot = await getDocs(q);
+    const snapshot = await getDocs(q)
 
-    snapshot.forEach(this.addSong);
+    snapshot.forEach(this.addSong)
   },
 
   methods: {
-    updateSong(i, value) {
-      this.songs[i].modified_name = value.modified_name;
-      this.songs[i].genre = value.genre;
+    updateSong(i: number, value: any) {
+      this.songs[i].modified_name = value.modified_name
+      this.songs[i].genre = value.genre
     },
 
-    removeSong(i) {
-      this.songs.splice(i, 1);
+    removeSong(i: number) {
+      this.songs.splice(i, 1)
     },
-    addSong(document) {
+    addSong(document: DocumentData) {
       const song: Song = {
         ...document.data(),
         docID: document.id
       }
 
-      this.songs.push(song);
+      this.songs.push(song)
     },
-    updateUnsavedFlag(value) {
-      this.unsavedFlag = value;
-    },
+    updateUnsavedFlag(value: boolean) {
+      this.unsavedFlag = value
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (!this.unsavedFlag) {
-      next();
+      next()
     } else {
       // eslint-disable-next-line no-alert, no-restricted-globals
-      const leave = confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
-      );
-      next(leave);
+      const leave = confirm('You have unsaved changes. Are you sure you want to leave?')
+      next(leave)
     }
-  },
+  }
 }
 </script>

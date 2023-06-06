@@ -1,5 +1,5 @@
 export default {
-  beforeMount(el, binding) {
+  beforeMount(el: any, binding: any) {
     let iconClass = `fa fa-${binding.value} text-xl`
 
     if (binding.modifiers.right) {

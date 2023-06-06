@@ -18,7 +18,7 @@
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
-          <div>{{ song.name }}</div>
+          <div>{{ song.display_name }}</div>
         </div>
       </div>
     </section>
@@ -70,7 +70,7 @@
       <li
         class="p-6 bg-gray-50 border border-gray-200"
         v-for="comment in sortComments"
-        :key="comment.commentID"
+        :key="comment.docID"
       >
         <!-- Comment Author -->
         <div class="mb-5">
@@ -86,9 +86,16 @@
   </main>
 </template>
 <script lang="ts">
-import { getDoc, doc, query, getDocs, where, updateDoc } from 'firebase/firestore'
+import {
+  getDoc,
+  doc,
+  query,
+  getDocs,
+  where,
+  updateDoc,
+  type DocumentData
+} from 'firebase/firestore'
 import { songsCollection, commentsCollection, auth } from '@/includes/firebase'
-import { type ErrorMessage } from 'vee-validate'
 import { addDoc } from 'firebase/firestore'
 
 import { mapActions } from 'pinia'
@@ -98,12 +105,14 @@ import usePlayerStore from '@/stores/player'
 import { mapState } from 'pinia'
 import useUserStore from '@/stores/user'
 
+import type { Song, Comment } from '@/includes/types'
+
 export default {
   name: 'Song',
   data() {
     return {
-      song: {},
-      comments: [],
+      song: {} as Song,
+      comments: [] as Comment[],
       schema: {
         comment: 'required|min:3'
       },
@@ -120,23 +129,27 @@ export default {
     ...mapState(useUserStore, ['userLoggedIn']),
 
     sortComments() {
-      return this.comments.slice().sort((a, b) => {
+      return this.comments.slice().sort((a: Comment, b: Comment) => {
         if (this.sort === '1') {
-          return new Date(b.datePosted) - new Date(a.datePosted)
+          return new Date(b.datePosted).getTime() - new Date(a.datePosted).getTime()
         }
 
-        return new Date(a.datePosted) - new Date(b.datePosted)
+        return new Date(a.datePosted).getTime() - new Date(b.datePosted).getTime()
       })
     }
   },
 
   async created() {
-    const songSnapshot = await getDoc(doc(songsCollection, this.$route.params.id as string))
+    const songSnapshot: any = await getDoc(doc(songsCollection, this.$route.params.id as string))
     if (!songSnapshot.exists()) {
       this.$router.push({ name: 'home' })
       return
     }
-    this.song = songSnapshot.data()
+
+    this.song = {
+      ...songSnapshot.data(),
+      docID: '222'
+    }
 
     this.sort =
       this.$route.query.sort == '1' || this.$route.query.sort == '2' ? this.$route.query.sort : '1'
@@ -156,16 +169,16 @@ export default {
       console.log(this.comments.length)
     },
 
-    addComment(document) {
+    addComment(document: DocumentData) {
       const comment = {
-        commentID: document.id,
+        docID: document.id,
         ...document.data()
       }
 
       this.comments.push(comment)
     },
 
-    async submit(values, { resetForm }) {
+    async submit(values: any, { resetForm }: any) {
       this.comment_in_submission = true
       this.comment_show_alert = true
       this.comment_alert_variant = 'bg-blue-500'
