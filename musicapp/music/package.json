@@ -20,6 +20,7 @@
     "@vee-validate/rules": "^4.9.5",
     "firebase": "^9.22.1",
     "howler": "^2.2.3",
+    "nprogress": "^0.2.0",
     "pinia": "^2.0.36",
     "vee-validate": "^4.9.5",
     "vue": "^3.3.2",

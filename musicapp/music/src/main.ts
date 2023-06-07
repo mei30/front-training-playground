@@ -1,5 +1,6 @@
 import './assets/base.css'
 import './assets/main.css'
+import 'nprogress/nprogress.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
@@ -13,6 +14,10 @@ import Icon from '@/directives/icon'
 import App from './App.vue'
 
 import GlobalComponents from '@/includes/global'
+
+import progressBar from './includes/progress-bar'
+
+progressBar(router)
 
 let app: any
 
