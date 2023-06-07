@@ -5,15 +5,19 @@ import vue from '@vitejs/plugin-vue'
 
 import { VitePWA } from 'vite-plugin-pwa'
 
+// import { visualizer } from 'rollup-plugin-visualizer'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    // visualizer({ open: true }),
     VitePWA({
       registerType: 'autoUpdate',
       devOptions: {
         enabled: true
       },
+
       manifest: {
         name: 'Music App',
         theme_color: '#ff5e3a',
