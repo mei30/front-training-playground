@@ -1,1 +1,3 @@
-<template></template>
+<template>
+  <BaseButton></BaseButton>
+</template>

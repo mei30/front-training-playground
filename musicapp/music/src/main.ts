@@ -12,6 +12,8 @@ import Icon from '@/directives/icon'
 
 import App from './App.vue'
 
+import GlobalComponents from '@/includes/global'
+
 let app: any
 
 onAuthStateChanged(auth, (user) => {
@@ -20,6 +22,7 @@ onAuthStateChanged(auth, (user) => {
     app.use(createPinia())
     app.use(VeeValidation)
     app.use(router)
+    app.use(GlobalComponents)
 
     app.directive('icon', Icon)
 

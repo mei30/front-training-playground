@@ -75,7 +75,6 @@ export default {
         }
 
         if (!navigator.onLine) {
-          console.log('ffffffffffffffffffffffffffffffffffffffffff')
           this.uploads.push({
             uploadTask: {} as UploadTask,
             name: file.name,
