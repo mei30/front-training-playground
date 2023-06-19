@@ -43,6 +43,23 @@ const routes: RouteRecordRaw[] = [
             component: () => import('pages/auth/RegisterSection.vue')
           }
         ]
+      },
+
+      {
+        path: 'account',
+        component: () => import('pages/AccountPage.vue'),
+        children: [
+          {
+            path: '',
+            name: 'AccountMenu',
+            component: () => import('pages/account/AccountMenu.vue')
+          },
+          {
+            path: 'my-details',
+            name: 'AccountDetails',
+            component: () => import('pages/account/AccountDetails.vue')
+          }
+        ]
       }
     ]
   },

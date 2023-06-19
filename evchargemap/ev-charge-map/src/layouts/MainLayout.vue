@@ -8,9 +8,9 @@
     </q-header>
     <q-footer elevated class="bg-teal">
       <q-tabs class="text-light">
-        <q-tab name="/auth" icon="login" label="Login" />
-        <q-tab name="/route" icon="directions" label="Routes" />
-        <q-tab name="/map" icon="explore" label="Map" />
+        <q-route-tab to="/auth" icon="login" label="Login" />
+        <q-route-tab to="/route" icon="directions" label="Routes" />
+        <q-route-tab to="/map" icon="explore" label="Map" />
       </q-tabs>
     </q-footer>
     <q-page-container>
